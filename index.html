@@ -82,7 +82,7 @@
 
   <script>
     
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvtzpFFLN48X0S8Gchnk2F0s98PUyJHz_T1fosoERDaNGaIoKysbOM-Y_kHye7aZ5W/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFPbdMo8PhDm2p5ck4GEeEqgIs9nQWdHrbmDuIBwXYEFwTDJesrReLSOZD9VR6bmKY/exec";
 
     async function submitForm() {
       const name = document.getElementById("name").value.trim();
@@ -109,34 +109,29 @@
 
       try {
         const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          mode: "cors", // Важно для запросов к Google Apps Script
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ name, phone, guests })
+            method: "POST",
+            mode: "no-cors", // ИЗМЕНЕНО НА no-cors
+            headers: {
+                "Content-Type": "application/json" // Можно оставить, но оно не будет отправлено как есть
+            },
+            body: JSON.stringify({ name, phone, guests })
         });
 
-        const result = await response.json(); // Парсим ответ от скрипта
+        // ВНИМАНИЕ: Вы НЕ сможете прочитать response.json() в режиме no-cors.
+        // Поэтому нужно будет сделать так, чтобы сообщение "Спасибо!"
+        // показывалось всегда, если не произошла сетевая ошибка.
 
-        if (result.status === "ok") {
-          statusElement.style.color = "#4CAF50"; // Зеленый цвет для успеха
-          statusElement.innerText = "Спасибо! Вы добавлены в очередь. Вам будет сообщено, как освободится столик.";
+        statusElement.style.color = "#4CAF50";
+        statusElement.innerText = "Спасибо! Ваши данные отправлены. Ожидайте подтверждения.";
+        // Очистка формы
+        document.getElementById("name").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("guests").value = "1";
 
-          // Очистка полей формы
-          document.getElementById("name").value = "";
-          document.getElementById("phone").value = "";
-          document.getElementById("guests").value = "1"; // Сброс количества гостей
+        bookingForm.classList.add("hidden");
+        formTitle.classList.add("hidden");
 
-          // Скрываем форму и заголовок, оставляя только сообщение
-          bookingForm.classList.add("hidden");
-          formTitle.classList.add("hidden");
-
-        } else {
-          statusElement.style.color = "red"; // Красный цвет для ошибки
-          statusElement.innerText = `Ошибка при записи: ${result.message || "Попробуйте еще раз."}`;
-        }
-      } catch (error) {
+    } catch (error) {
         // Обработка ошибок сети (например, нет интернета, неправильный URL)
         console.error("Произошла ошибка сети или запроса:", error);
         statusElement.style.color = "red";
