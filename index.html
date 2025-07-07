@@ -29,6 +29,46 @@
       color: #333;
       margin-bottom: 1.5em;
     }
+    /* Styles for phone input group */
+    .phone-input-group {
+        display: flex;
+        align-items: center;
+        margin: 0.5em 0;
+    }
+    .phone-input-group span, .phone-input-group select {
+        padding: 0.8em;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1em;
+        margin-right: -1px; /* Remove gap between elements */
+    }
+    .phone-input-group span {
+        background-color: #eee;
+        border-right: none;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+    .phone-input-group select {
+        border-right: none;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        -webkit-appearance: none; /* Remove default dropdown arrow */
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2C146.2l-145%2C146.2l-145%2C-146.2l290%2C0Z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+        background-repeat: no-repeat;
+        background-position: right 0.7em top 50%, 0 0;
+        background-size: 0.65em auto, 100%;
+    }
+    .phone-input-group input {
+        flex-grow: 1; /* Make input take remaining space */
+        width: auto; /* Override default 100% width */
+        margin: 0; /* Remove default margin */
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
     input {
       width: calc(100% - 1em);
       padding: 0.8em;
@@ -73,7 +113,36 @@
     <h2 id="formTitle">Запишитесь в очередь</h2>
     <div id="bookingForm">
       <input type="text" id="name" placeholder="Ваше имя" required>
-      <input type="tel" id="phone" placeholder="Номер телефона" required>
+
+      <label for="phonePrefix" style="font-size: 0.9em; margin-top: 0.5em; display: block;">Номер телефона:</label>
+      <div class="phone-input-group">
+        <span>+7</span>
+        <select id="phonePrefix">
+            <option value="700">700</option>
+            <option value="701">701</option>
+            <option value="702">702</option>
+            <option value="705">705</option>
+            <option value="707" selected>707</option> <option value="708">708</option>
+            <option value="747">747</option>
+            <option value="771">771</option>
+            <option value="775">775</option>
+            <option value="776">776</option>
+            <option value="777">777</option>
+            <option value="778">778</option>
+            <option value="760">760</option>
+            <option value="761">761</option>
+            <option value="762">762</option>
+            <option value="763">763</option>
+            <option value="764">764</option>
+            <option value="765">765</option>
+            <option value="766">766</option>
+            <option value="767">767</option>
+            <option value="768">768</option>
+            <option value="769">769</option>
+        </select>
+        <input type="tel" id="phoneDigits" placeholder="XXXXXXX" maxlength="7" pattern="[0-9]{7}" required>
+      </div>
+
       <input type="number" id="guests" placeholder="Количество гостей" min="1" value="1" required>
       <button id="submitButton" onclick="submitForm()">Записаться</button>
     </div>
@@ -81,13 +150,15 @@
   </div>
 
   <script>
-    
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdSYpvjm2xCNb-F0CcIVlXgBHDl2TI8rSAWSH1VEIvfGVlQY6rk3dePkXRA_9kvxp1/exec";
+    // Ваш URL скрипта Google Apps Script
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdSYpvjm2xCNb-F0CcIVlXgBHDl2TI8rSAWSH1VEIvfGVlQY6rk3dePkXRA_9kvxp1/exec"; 
 
     async function submitForm() {
       const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
+      const prefix = document.getElementById("phonePrefix").value; // Получаем выбранный префикс
+      const digits = document.getElementById("phoneDigits").value.trim(); // Получаем 7 цифр
       const guests = document.getElementById("guests").value.trim();
+      
       const statusElement = document.getElementById("status");
       const submitButton = document.getElementById("submitButton");
       const bookingForm = document.getElementById("bookingForm");
@@ -96,11 +167,22 @@
       statusElement.classList.remove("hidden"); // Показываем сообщение о статусе
 
       // Простая валидация полей
-      if (!name || !phone || !guests || parseInt(guests) < 1) {
+      if (!name || !digits || !guests || parseInt(guests) < 1) {
         statusElement.style.color = "red";
         statusElement.innerText = "Пожалуйста, заполните все поля корректно (гостей не менее 1).";
         return;
       }
+
+      // Валидация 7 цифр номера телефона
+      const digitsRegex = /^\d{7}$/; // Проверяем, что введены ровно 7 цифр
+      if (!digitsRegex.test(digits)) {
+        statusElement.style.color = "red";
+        statusElement.innerText = "Пожалуйста, введите 7 цифр номера телефона.";
+        return;
+      }
+
+      // Собираем полный номер телефона
+      const fullPhoneNumber = `+7${prefix}${digits}`;
 
       // Показываем временное сообщение и отключаем кнопку
       statusElement.style.color = "#555";
@@ -109,36 +191,32 @@
 
       try {
         const response = await fetch(SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors", // ИЗМЕНЕНО НА no-cors
-            headers: {
-                "Content-Type": "application/json" // Можно оставить, но оно не будет отправлено как есть
-            },
-            body: JSON.stringify({ name, phone, guests })
+          method: "POST",
+          mode: "no-cors", 
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, phone: fullPhoneNumber, guests }) // Отправляем полный номер
         });
 
-        // ВНИМАНИЕ: Вы НЕ сможете прочитать response.json() в режиме no-cors.
-        // Поэтому нужно будет сделать так, чтобы сообщение "Спасибо!"
-        // показывалось всегда, если не произошла сетевая ошибка.
+        statusElement.style.color = "#4CAF50"; 
+        statusElement.innerText = "Спасибо! Вы добавлены в очередь. Вам будет сообщено, как освободится столик.";
 
-        statusElement.style.color = "#4CAF50";
-        statusElement.innerText = "Спасибо! Ваши данные отправлены. Ожидайте подтверждения.";
-        // Очистка формы
+        // Очистка полей формы
         document.getElementById("name").value = "";
-        document.getElementById("phone").value = "";
-        document.getElementById("guests").value = "1";
+        document.getElementById("phoneDigits").value = ""; // Очищаем только поле для цифр
+        document.getElementById("guests").value = "1"; 
 
+        // Скрываем форму и заголовок
         bookingForm.classList.add("hidden");
         formTitle.classList.add("hidden");
 
-    } catch (error) {
-        // Обработка ошибок сети (например, нет интернета, неправильный URL)
+      } catch (error) {
         console.error("Произошла ошибка сети или запроса:", error);
         statusElement.style.color = "red";
         statusElement.innerText = "Произошла ошибка связи. Пожалуйста, проверьте ваше интернет-соединение и попробуйте еще раз.";
       } finally {
-        // Включаем кнопку обратно, независимо от результата
-        submitButton.disabled = false;
+        submitButton.disabled = false; // Включаем кнопку обратно
       }
     }
   </script>
