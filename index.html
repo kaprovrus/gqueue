@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Запись в ресторан</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .container {
+      background-color: #fff;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1.5em;
+    }
+    input {
+      width: calc(100% - 1em);
+      padding: 0.8em;
+      margin: 0.5em 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 0.8em 1.2em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1em;
+      margin-top: 1em;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .status-message {
+      text-align: center;
+      margin-top: 1.5em;
+      font-size: 1.1em;
+      color: #555;
+      min-height: 2em; /* Чтобы текст не "прыгал" */
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="formTitle">Запишитесь в очередь</h2>
+    <div id="bookingForm">
+      <input type="text" id="name" placeholder="Ваше имя" required>
+      <input type="tel" id="phone" placeholder="Номер телефона" required>
+      <input type="number" id="guests" placeholder="Количество гостей" min="1" required>
+      <button onclick="submitForm()">Записаться</button>
+    </div>
+    <p id="status" class="status-message hidden"></p>
+  </div>
+
+  <script>
+    // !!! ЗАМЕНИТЕ 'ВАШ_URL_ВЕБ_ПРИЛОЖЕНИЯ' на URL, полученный в Шаге 2 !!!
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbze0yRgFD0ZK9A4BFvXoHGKlmbrgkqIOpG9wY85S8o58Mv8WqTV1i8zZLeF-BB5HTHe/exec";
+
+    async function submitForm() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const guests = document.getElementById("guests").value.trim();
+
+      const statusElement = document.getElementById("status");
+      statusElement.classList.remove("hidden"); // Показываем сообщение о статусе
+
+      // Простая валидация
+      if (!name || !phone || !guests) {
+        statusElement.style.color = "red";
+        statusElement.innerText = "Пожалуйста, заполните все поля.";
+        return;
+      }
+
+      // Добавим временное сообщение
+      statusElement.style.color = "#555";
+      statusElement.innerText = "Отправка данных...";
+      document.getElementById("bookingForm").querySelector('button').disabled = true; // Отключаем кнопку
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "cors", // Важно для запросов к Google Apps Script
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, phone, guests })
+        });
+
+        const result = await response.json();
+
+        if (result.status === "ok") {
+          statusElement.style.color = "#4CAF50";
+          statusElement.innerText = "Спасибо! Вы добавлены в очередь. Вам будет сообщено, как освободится столик.";
+          // Очистка формы
+          document.getElementById("name").value = "";
+          document.getElementById("phone").value = "";
+          document.getElementById("guests").value = "";
+
+          // Скрываем форму и показываем только сообщение
+          document.getElementById("bookingForm").classList.add("hidden");
+          document.getElementById("formTitle").classList.add("hidden");
+
+
+        } else {
+          statusElement.style.color = "red";
+          statusElement.innerText = `Ошибка при записи: ${result.message || "Попробуйте еще раз."}`;
+        }
+      } catch (error) {
+        console.error("Произошла ошибка сети или запроса:", error);
+        statusElement.style.color = "red";
+        statusElement.innerText = "Произошла ошибка связи. Пожалуйста, проверьте ваше интернет-соединение и попробуйте еще раз.";
+      } finally {
+        document.getElementById("bookingForm").querySelector('button').disabled = false; // Включаем кнопку обратно
+      }
+    }
+  </script>
+</body>
+</html>
