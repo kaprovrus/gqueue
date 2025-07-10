@@ -157,17 +157,17 @@
       <div class="phone-input-group">
         <span>+7</span>
         <select id="phonePrefix">
-         <option value="700">700</option>
+          <option value="700">700</option>
           <option value="701">701</option>
           <option value="702">702</option>
           <option value="705">705</option>
-          <option value="707" selected>707</option>
+          <option value="707">707</option>
           <option value="708">708</option>
           <option value="747">747</option>
           <option value="771">771</option>
           <option value="775">775</option>
           <option value="776">776</option>
-          <option value="777">777</option>
+          <option value="777" selected>777</option>
           <option value="778">778</option>
           <option value="760">760</option>
           <option value="761">761</option>
@@ -182,6 +182,7 @@
         </select>
         <input type="tel" id="phoneDigits" placeholder="XXXXXXX" maxlength="7" pattern="[0-9]{7}" required>
       </div>
+      <label for="guests" id="guestsLabel" style="font-size: 0.9em; margin-top: 0.5em; display: block;">Количество гостей:</label>
       <input type="number" id="guests" placeholder="Количество гостей" min="1" value="1" required>
       <button id="submitButton" onclick="submitForm()">Записаться</button>
     </div>
@@ -204,6 +205,7 @@
         phoneLabel: "Номер телефона:",
         phonePlaceholder: "XXXXXXX",
         guests: "Количество гостей",
+        guestsLabel: "Количество гостей:",
         submit: "Записаться",
         success: "Спасибо! Вы добавлены в очередь.",
         error: "Пожалуйста, заполните все поля корректно.",
@@ -219,6 +221,7 @@
         phoneLabel: "Телефон нөмірі:",
         phonePlaceholder: "XXXXXXX",
         guests: "Қонақтар саны",
+        guestsLabel: "Қонақтар саны:",
         submit: "Жазылу",
         success: "Рақмет! Сіз кезекке тіркелдіңіз.",
         error: "Барлық өрістерді дұрыс толтырыңыз.",
@@ -234,6 +237,7 @@
         phoneLabel: "Phone number:",
         phonePlaceholder: "XXXXXXX",
         guests: "Number of guests",
+        guestsLabel: "Number of guests:",
         submit: "Join",
         success: "Thank you! You are in the queue.",
         error: "Please fill in all fields correctly.",
@@ -255,6 +259,7 @@
       document.getElementById("phoneLabel").innerText = t.phoneLabel;
       document.getElementById("phoneDigits").placeholder = t.phonePlaceholder;
       document.getElementById("guests").placeholder = t.guests;
+      document.getElementById("guestsLabel").innerText = t.guestsLabel;
       document.getElementById("submitButton").innerText = t.submit;
       document.getElementById("supportLink").innerText = t.support;
       document.getElementById("queueLink").innerText = t.queue;
