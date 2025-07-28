@@ -5,28 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Очередь ресторана</title>
     <style>
-        /* Base Styles */
         body {
             font-family: Arial, sans-serif;
-            padding: 2em 1em 5em; /* Adjusted padding for better mobile fit */
+            padding: 2em 1em 5em;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color: #f4f4f4;
             color: #333;
-            min-height: 100vh; /* Ensure body takes full viewport height */
-            box-sizing: border-box; /* Include padding in element's total width and height */
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
         .logo {
-            margin-bottom: 1.5em; /* Slightly increased margin for better spacing */
+            margin-bottom: 1.5em;
             text-align: center;
         }
 
         .logo img {
-            max-height: 90px; /* Slightly increased max-height for better visibility */
-            width: auto; /* Ensure aspect ratio is maintained */
+            max-height: 90px;
+            width: auto;
             cursor: pointer;
         }
 
@@ -35,34 +34,33 @@
             padding: 2em;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 95%; /* Use percentage for width to adapt to screen size */
-            max-width: 450px; /* Increased max-width slightly for larger screens */
-            margin-bottom: 1em; /* Add some margin below the container */
+            width: 95%;
+            max-width: 450px;
+            margin-bottom: 1em;
             box-sizing: border-box;
         }
 
         h2 {
             text-align: center;
             margin-bottom: 1em;
-            font-size: 1.8em; /* Adjusted font size for headings */
+            font-size: 1.8em;
         }
 
         select, input[type="text"], input[type="number"], input[type="tel"], button {
             width: 100%;
-            padding: 0.9em; /* Slightly increased padding for easier tapping */
-            margin: 0.6em 0; /* Adjusted margin */
+            padding: 0.9em;
+            margin: 0.6em 0;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 1em;
-            box-sizing: border-box; /* Crucial for consistent sizing */
+            box-sizing: border-box;
         }
 
-        /* Phone input group styling */
         .phone-input-group {
             display: flex;
             align-items: center;
             margin: 0.6em 0;
-            width: 100%; /* Ensure it takes full width */
+            width: 100%;
         }
 
         .phone-input-group span {
@@ -71,15 +69,15 @@
             border-radius: 4px 0 0 4px;
             margin-right: -1px;
             font-size: 1em;
-            background-color: #e9e9e9; /* Light background for the '+7' part */
-            white-space: nowrap; /* Prevent wrapping */
+            background-color: #e9e9e9;
+            white-space: nowrap;
         }
 
         .phone-input-group select {
-            flex-shrink: 0; /* Prevent select from shrinking too much */
-            width: auto; /* Allow select to take natural width */
-            border-radius: 0; /* Remove border-radius on ends */
-            padding-right: 0.5em; /* Add some padding to the right of select */
+            flex-shrink: 0;
+            width: auto;
+            border-radius: 0;
+            padding-right: 0.5em;
         }
 
         .phone-input-group input {
@@ -88,7 +86,7 @@
             border-left: none;
             border-radius: 0 4px 4px 0;
             padding: 0.9em;
-            min-width: 0; /* Allow input to shrink below its content if needed */
+            min-width: 0;
         }
 
         button {
@@ -98,7 +96,7 @@
             font-size: 1.1em;
             transition: background-color 0.3s ease;
             cursor: pointer;
-            padding: 1em; /* Increased button padding for better tap target */
+            padding: 1em;
         }
 
         button:hover {
@@ -112,8 +110,8 @@
 
         .status-message {
             text-align: center;
-            margin-top: 1.5em; /* Increased margin */
-            font-size: 1.1em; /* Slightly larger font for status message */
+            margin-top: 1.5em;
+            font-size: 1.1em;
             color: #555;
             min-height: 2em;
         }
@@ -122,7 +120,6 @@
             display: none;
         }
 
-        /* Footer Banner */
         .footer-banner {
             position: fixed;
             bottom: 0;
@@ -131,106 +128,25 @@
             background-color: #111;
             color: white;
             display: flex;
-            justify-content: space-around; /* Distribute items with space around */
+            justify-content: space-around;
             align-items: center;
-            padding: 1em; /* Increased padding */
-            font-size: 0.95em; /* Slightly larger font */
+            padding: 1em;
+            font-size: 0.95em;
             z-index: 1000;
             box-sizing: border-box;
-            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-            gap: 0.5em; /* Gap between items when wrapping */
+            flex-wrap: wrap;
+            gap: 0.5em;
         }
 
         .footer-banner a {
             color: white;
             text-decoration: none;
-            padding: 0.3em 0.5em; /* Add some padding to links for better tap area */
+            padding: 0.3em 0.5em;
             border-radius: 4px;
         }
 
         .footer-banner a:hover {
             text-decoration: underline;
-        }
-
-        /* Media Queries for Responsiveness */
-
-        /* Tablets and larger phones (e.g., 768px and up) */
-        @media (min-width: 768px) {
-            body {
-                padding: 3em 2em 6em; /* More padding for larger screens */
-            }
-
-            .logo img {
-                max-height: 100px;
-            }
-
-            .container {
-                max-width: 500px; /* Allow container to be slightly wider on tablets */
-                padding: 2.5em;
-            }
-
-            h2 {
-                font-size: 2em;
-            }
-
-            select, input[type="text"], input[type="number"], input[type="tel"], button {
-                padding: 1em; /* More padding for larger inputs */
-            }
-
-            .phone-input-group span,
-            .phone-input-group select,
-            .phone-input-group input {
-                padding: 1em;
-            }
-
-            button {
-                font-size: 1.2em;
-            }
-
-            .status-message {
-                font-size: 1.2em;
-            }
-
-            .footer-banner {
-                padding: 1em 2em; /* More horizontal padding for the footer */
-                justify-content: space-between; /* Space out items more on larger screens */
-            }
-        }
-
-        /* Desktops and larger screens (e.g., 1024px and up) */
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 550px; /* Further increase max-width for desktops */
-            }
-
-            h2 {
-                font-size: 2.2em;
-            }
-
-            .logo img {
-                max-height: 120px;
-            }
-
-            select, input[type="text"], input[type="number"], input[type="tel"], button {
-                font-size: 1.1em;
-            }
-        }
-
-        /* Specific adjustments for very small screens (if necessary, often covered by base styles) */
-        @media (max-width: 380px) {
-            .container {
-                padding: 1.5em; /* Reduce padding slightly for very small screens */
-            }
-            .footer-banner {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 0.8em;
-                padding: 0.8em 0.5em;
-            }
-            .footer-banner a {
-                width: 100%; /* Make links take full width for easier tapping */
-            }
         }
     </style>
 </head>
@@ -252,11 +168,11 @@
 
         <div id="bookingForm">
             <input type="text" id="name" placeholder="Ваше имя" required>
-            <label for="phonePrefix" id="phoneLabel" style="font-size: 0.9em; margin-top: 0.5em; display: block;">Номер телефона:</label>
+            <label for="phonePrefix" id="phoneLabel">Номер телефона:</label>
             <div class="phone-input-group">
                 <span>+7</span>
                 <select id="phonePrefix">
-                    <option value="700">700</option>
+                    <option value="777" selected>777</option>
                     <option value="701">701</option>
                     <option value="702">702</option>
                     <option value="705">705</option>
@@ -266,23 +182,20 @@
                     <option value="771">771</option>
                     <option value="775">775</option>
                     <option value="776">776</option>
-                    <option value="777" selected>777</option>
                     <option value="778">778</option>
-                    <option value="760">760</option>
-                    <option value="761">761</option>
-                    <option value="762">762</option>
-                    <option value="763">763</option>
-                    <option value="764">764</option>
-                    <option value="765">765</option>
-                    <option value="766">766</option>
-                    <option value="767">767</option>
-                    <option value="768">768</option>
-                    <option value="769">769</option>
                 </select>
                 <input type="tel" id="phoneDigits" placeholder="XXXXXXX" maxlength="7" pattern="[0-9]{7}" required>
             </div>
-            <label for="guests" id="guestsLabel" style="font-size: 0.9em; margin-top: 0.5em; display: block;">Количество гостей:</label>
+
+            <label for="guests" id="guestsLabel">Количество гостей:</label>
             <input type="number" id="guests" placeholder="Количество гостей" min="1" value="1" required>
+
+            <label for="zone" id="zoneLabel">Выберите зал:</label>
+            <select id="zone">
+                <option value="Основной Зал">Основной Зал</option>
+                <option value="Летний Зал">Летний Зал</option>
+            </select>
+
             <button id="submitButton" onclick="submitForm()">Записаться</button>
         </div>
 
@@ -305,6 +218,9 @@
                 phonePlaceholder: "XXXXXXX",
                 guests: "Количество гостей",
                 guestsLabel: "Количество гостей:",
+                zoneLabel: "Выберите зал:",
+                zoneMain: "Основной Зал",
+                zoneSummer: "Летний Зал",
                 submit: "Записаться",
                 success: "Спасибо! Вы добавлены в очередь.",
                 error: "Пожалуйста, заполните все поля корректно.",
@@ -321,6 +237,9 @@
                 phonePlaceholder: "XXXXXXX",
                 guests: "Қонақтар саны",
                 guestsLabel: "Қонақтар саны:",
+                zoneLabel: "Залды таңдаңыз:",
+                zoneMain: "Негізгі зал",
+                zoneSummer: "Жазғы зал",
                 submit: "Жазылу",
                 success: "Рақмет! Сіз кезекке тіркелдіңіз.",
                 error: "Барлық өрістерді дұрыс толтырыңыз.",
@@ -337,6 +256,9 @@
                 phonePlaceholder: "XXXXXXX",
                 guests: "Number of guests",
                 guestsLabel: "Number of guests:",
+                zoneLabel: "Choose a hall:",
+                zoneMain: "Main Hall",
+                zoneSummer: "Summer Hall",
                 submit: "Join",
                 success: "Thank you! You are in the queue.",
                 error: "Please fill in all fields correctly.",
@@ -348,8 +270,6 @@
             }
         };
 
-        document.getElementById("language").addEventListener("change", applyTranslation);
-
         function applyTranslation() {
             const lang = document.getElementById("language").value;
             const t = translations[lang];
@@ -359,12 +279,26 @@
             document.getElementById("phoneDigits").placeholder = t.phonePlaceholder;
             document.getElementById("guests").placeholder = t.guests;
             document.getElementById("guestsLabel").innerText = t.guestsLabel;
+            document.getElementById("zoneLabel").innerText = t.zoneLabel;
+            document.getElementById("zone").options[0].text = t.zoneMain;
+            document.getElementById("zone").options[1].text = t.zoneSummer;
             document.getElementById("submitButton").innerText = t.submit;
             document.getElementById("supportLink").innerText = t.support;
             document.getElementById("queueLink").innerText = t.queue;
         }
 
-        applyTranslation();
+        document.getElementById("language").addEventListener("change", () => {
+            localStorage.setItem("selectedLang", document.getElementById("language").value);
+            applyTranslation();
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedLang = localStorage.getItem("selectedLang");
+            if (savedLang) {
+                document.getElementById("language").value = savedLang;
+            }
+            applyTranslation();
+        });
 
         async function submitForm() {
             const name = document.getElementById("name").value.trim();
@@ -372,6 +306,7 @@
             const digits = document.getElementById("phoneDigits").value.trim();
             const guests = document.getElementById("guests").value.trim();
             const language = document.getElementById("language").value;
+            const zone = document.getElementById("zone").value;
             const t = translations[language];
 
             const statusElement = document.getElementById("status");
@@ -403,7 +338,7 @@
                     method: "POST",
                     mode: "no-cors",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name, phone: fullPhoneNumber, guests, language })
+                    body: JSON.stringify({ name, phone: fullPhoneNumber, guests, language, zone })
                 });
 
                 statusElement.style.color = "#4CAF50";
@@ -412,11 +347,10 @@
                 document.getElementById("name").value = "";
                 document.getElementById("phoneDigits").value = "";
                 document.getElementById("guests").value = "1";
+
                 bookingForm.classList.add("hidden");
                 formTitle.classList.add("hidden");
-
             } catch (error) {
-                console.error("Ошибка:", error);
                 statusElement.style.color = "red";
                 statusElement.innerText = t.fail;
             } finally {
